@@ -46,7 +46,14 @@ public class S3UploadCallable extends AbstractS3Callable implements FileCallable
 
     public ObjectMetadata buildMetadata(FilePath filePath) throws IOException, InterruptedException {
         ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(Mimetypes.getInstance().getMimetype(filePath.getName()));
+
+        // This doesn't detect json well, so we manually set it based on extension
+        if (filePath.getName().toLowerCase().endsWith("json")) {
+            metadata.setContentType("application/json");
+        } else {
+            metadata.setContentType(Mimetypes.getInstance().getMimetype(filePath.getName()));
+        }
+
         metadata.setContentLength(filePath.length());
         metadata.setLastModified(new Date(filePath.lastModified()));
         if ((storageClass != null) && !"".equals(storageClass)) {
