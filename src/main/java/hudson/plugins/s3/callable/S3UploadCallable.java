@@ -75,6 +75,8 @@ public class S3UploadCallable extends AbstractS3Callable implements FileCallable
                 }
             } else if (key.equals("content-encoding")) {
                 metadata.setContentEncoding(metadataPair.value);
+            } else if (key.equals("content-type")) {
+                metadata.setContentType(metadataPair.value);
             } else {
                 metadata.addUserMetadata(metadataPair.key, metadataPair.value);
             }
